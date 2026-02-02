@@ -10,6 +10,8 @@ return {
 				"shellcheck",
 				"shfmt",
 				"clangd",
+				"jdtls",
+				"rust-analyzer",
 				--"asm-lsp",
 				--"tailwindcss-language-server",
 				--"typescript-language-server",
@@ -135,6 +137,117 @@ return {
 						},
 					},
 				},]=]
+			jdtls = {
+				capabilities = require("cmp_nvim_lsp").default_capabilities(),
+				settings = {
+					java = {
+						eclipse = {
+							downloadSources = true,
+						},
+						configuration = {
+							runtimes = {
+								{
+									name = "JavaSE-17",
+									path = "/usr/lib/jvm/java-17-openjdk",
+								},
+							},
+						},
+						maven = {
+							downloadSources = true,
+							updateSnapshots = true,
+						},
+						implementationsCodeLens = {
+							enabled = true,
+						},
+						referencesCodeLens = {
+							enabled = true,
+						},
+						signatureHelp = {
+							enabled = true,
+							description = {
+								enabled = true,
+							},
+						},
+						contentProvider = "fernflower",
+						saveActions = {
+							organizeImports = true,
+						},
+						completion = {
+							enabled = true,
+							filteredTypes = { "com.sun.*", "java.awt.*", "java.swing.*" },
+							favoriteStaticMembers = {
+								"org.junit.Assert.*",
+								"org.junit.Assume.*",
+								"org.junit.jupiter.api.Assertions.*",
+								"org.junit.jupiter.api.Assumptions.*",
+								"org.junit.jupiter.api.DynamicContainer.*",
+								"org.junit.jupiter.api.DynamicTest.*",
+								"org.mockito.Mockito.*",
+							},
+							importOrder = { "java", "javax", "com", "org" },
+							lazy = true,
+							lazyResolveTextEdit = true,
+							matchCase = "off",
+							maxResults = 20,
+							postfix = "off",
+						},
+						format = {
+							enabled = true,
+							settings = {
+								url = "file:~/.config/eclipse-formatter.xml",
+								profile = "GoogleStyle",
+							},
+						},
+						folding = {
+							enabled = true,
+						},
+						progressReports = {
+							enabled = true,
+						},
+						sources = {
+							organizeImports = {
+								starThreshold = 9999,
+								staticStarThreshold = 9999,
+							},
+						},
+						codeGeneration = {
+							toString = {
+								template = "${object}.toString()",
+							},
+							useBlocks = true,
+							hashCodeEquals = {
+								useJava7Objects = true,
+								useInstanceof = false,
+							},
+							insertionLocation = "afterCursor",
+						},
+						selectionRange = {
+							enabled = true,
+						},
+						semanticHighlighting = {
+							enabled = true,
+						},
+						typeHierarchy = {
+							enabled = true,
+						},
+					},
+				},
+				init_options = {
+					bundles = {},
+				},
+				on_attach = function(client, bufnr)
+					if client.server_capabilities.documentFormattingProvider then
+						vim.api.nvim_clear_autocmds({ group = "lsp_formatting", buffer = bufnr })
+						vim.api.nvim_create_autocmd("BufWritePost", {
+							group = "lsp_formatting",
+							buffer = bufnr,
+							callback = function()
+								vim.lsp.buf.format({ async = false })
+							end,
+						})
+					end
+				end,
+			},
 				--[=[
 	      clangd = {
               cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=detailed" },
@@ -180,7 +293,7 @@ return {
 						end
 					end,
 				},
-				--[=[
+				--[=[]]
 				rust_analyzer = {
 					cmd = { "rust-analyzer" },
 					capabilities = require("cmp_nvim_lsp").default_capabilities(),
@@ -202,6 +315,7 @@ return {
 						},
 					},
 				},]=]
+				--[=[
 			},
 			setup = {},
 		},
