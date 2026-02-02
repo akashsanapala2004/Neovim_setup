@@ -10,6 +10,7 @@ return {
 				"shellcheck",
 				"shfmt",
 				"clangd",
+				--"asm-lsp",
 				--"tailwindcss-language-server",
 				--"typescript-language-server",
 				--"css-lsp",
@@ -175,7 +176,7 @@ return {
 					},
 					on_attach = function(client, bufnr)
 						if client.server_capabilities.inlayHintProvider then
-							vim.lsp.buf.inlay_hint(bufnr, true)
+							vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
 						end
 					end,
 				},
@@ -205,7 +206,7 @@ return {
 			setup = {},
 		},
 	},
-	{
+	--[=[{
 		"neovim/nvim-lspconfig",
 		opts = function()
 			local keys = require("lazyvim.plugins.lsp.keymaps").get()
@@ -221,5 +222,5 @@ return {
 				},
 			})
 		end,
-	},
+	},]=]
 }

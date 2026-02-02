@@ -25,6 +25,8 @@ return {
 				"cpp",
 				"rust",
 				"c",
+				"java",
+				"asm",
 			},
 
 			-- matchup = {
