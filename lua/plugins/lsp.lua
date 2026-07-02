@@ -138,7 +138,7 @@ return {
 					},
 				},]=]
 			jdtls = {
-				capabilities = require("cmp_nvim_lsp").default_capabilities(),
+				--capabilities = require("cmp_nvim_lsp").default_capabilities(),
 				settings = {
 					java = {
 						eclipse = {
@@ -270,7 +270,7 @@ return {
           end,
         },]=]
 				--
-				clangd = {
+				 clangd = {
 					cmd = {
 						"clangd",
 						"--clang-tidy", -- enable clang-tidy diagnostics
@@ -293,16 +293,16 @@ return {
 						end
 					end,
 				},
-				--[=[]]
 				rust_analyzer = {
 					cmd = { "rust-analyzer" },
-					capabilities = require("cmp_nvim_lsp").default_capabilities(),
+					--capabilities = require("cmp_nvim_lsp").default_capabilities(),
 					settings = {
 						["rust-analyzer"] = {
 							cargo = { allFeatures = true },
-							checkOnSave = {
-								command = "clippy", -- Use clippy for diagnostics
-							},
+							check = {
+								-- command = "clippy", -- Use clippy for diagnostics
+							    command = "check",
+              },
 							completion = {
 								postfix = { enable = true }, -- Enable postfix completions
 							},
@@ -314,8 +314,7 @@ return {
 							},
 						},
 					},
-				},]=]
-				--[=[
+				},
 			},
 			setup = {},
 		},
